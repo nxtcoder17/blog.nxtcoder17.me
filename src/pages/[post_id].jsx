@@ -1,15 +1,20 @@
-import parseBlog from '../lib/parse-blog';
 import BlogTitle from '../components/atoms/blog-title';
 import BlogPostContainer from '../components/atoms/blog-post-container';
-import { getMdxString } from '../lib/md-to-html';
+import PageHeader from '../components/molecules/page-header';
+import Logo from '../components/atoms/logo';
+import HeaderLinks from '../components/molecules/header-links';
+import {renderToStaticMarkup} from "react-dom/server";
+import {MDXProvider} from "@mdx-js/react";
+import {MDXComponents} from "../lib/mdx-helpers";
 
-export const BlogPost = ({ post }) => {
+export const BlogPost = ({ post, html }) => {
   if (!post) return <></>;
   return (
-    <div>
+    <div className="h-screen flex flex-col">
+      <PageHeader Logo={Logo} Links={HeaderLinks} />
       <BlogPostContainer>
         <BlogTitle>{post.title}</BlogTitle>
-        <article dangerouslySetInnerHTML={{ __html: post.html }} />
+        <article dangerouslySetInnerHTML={{ __html: html }} />
       </BlogPostContainer>
     </div>
   );
@@ -26,9 +31,12 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(appCtx) {
   const pPath = appCtx.params.post_id;
-  const x = Buffer.from(pPath, 'base64').toString();
-  const postData = parseBlog(x);
-  postData.html = getMdxString(postData.content);
-  console.log(postData);
-  return { props: { post: postData } };
+  const { default: X } = await import('../blog-posts/first-post.mdx');
+  console.log(X);
+  const blogHtml = renderToStaticMarkup(
+    <MDXProvider components={MDXComponents}>
+      <X />
+    </MDXProvider>
+  );
+  return { props: { post: { title: 'sample', html: 'sample' }, html: blogHtml } };
 }
