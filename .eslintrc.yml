@@ -1,0 +1,8 @@
+extends:
+  - '@madhouselabs/eslint-config-react-base'
+  - plugin:react/recommended
+
+rules:
+  react/react-in-jsx-scope: 0
+  react/jsx-filename-extension: 0
+  react/prop-types: 0
