@@ -4,12 +4,10 @@ const stringifyObject = require('stringify-object');
 module.exports = async function (src) {
   const callback = this.async();
   const { content, data } = matter(src);
+  data.tags = data.tags.split(',').map((item) => item.trim());
 
-  console.log(content, data);
-
-  const code = `export const frontMatter = ${stringifyObject(
-    data
-  )}; ${content}`;
+  const code = `export const meta = ${stringifyObject(data)};
+  ${content}`;
 
   return callback(null, code);
 };

@@ -6,6 +6,9 @@ module.exports = {
   purge: {
     content: [
       './src/pages/**/*.jsx',
+      './src/lib/**/*.jsx',
+      './src/lib/**/*.js',
+      './src/blog-posts/**/*.mdx',
       './src/components/atoms/*.jsx',
       './src/components/molecules/*.jsx',
       './src/components/organisms/*.jsx',
@@ -16,6 +19,7 @@ module.exports = {
     fontFamily: {
       sans: ['Inter'],
       logo: ['Inter'],
+      code: ['Fira Mono'],
     },
     extend: {
       colors: {

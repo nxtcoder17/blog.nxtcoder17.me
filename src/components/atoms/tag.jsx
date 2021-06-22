@@ -24,4 +24,8 @@ Tag.Container = ({ children }) => {
   );
 };
 
+Tag.Container2 = ({ children }) => {
+  return <ul className="flex flex-row gap-3 py-3 flex-wrap">{children}</ul>;
+};
+
 export default Tag;

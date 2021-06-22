@@ -1,10 +1,16 @@
 import React from 'react';
-import Highlight, { defaultProps } from 'prism-react-renderer';
+import Highlight, { Prism } from 'prism-react-renderer';
 
 const CodeBlock = ({ children, className }) => {
   const language = className.replace(/language-/, '');
   return (
-    <Highlight {...defaultProps} code={children} language={language}>
+    <Highlight
+      // theme={dracula}
+      Prism={Prism}
+      // {...defaultProps}
+      code={children}
+      language={language}
+    >
       {({
         className: className2,
         style,
@@ -12,7 +18,10 @@ const CodeBlock = ({ children, className }) => {
         getLineProps,
         getTokenProps,
       }) => (
-        <pre className={className2} style={{ ...style, padding: '20px' }}>
+        <pre
+          className={`${className2} rounded-lg`}
+          style={{ ...style, padding: '20px' }}
+        >
           {tokens.map((line, i) => (
             // eslint-disable-next-line react/no-array-index-key
             <div key={i} {...getLineProps({ line, key: i })}>

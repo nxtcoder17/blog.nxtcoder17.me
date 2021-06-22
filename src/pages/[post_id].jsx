@@ -1,21 +1,17 @@
-import BlogTitle from '../components/atoms/blog-title';
-import BlogPostContainer from '../components/atoms/blog-post-container';
 import PageHeader from '../components/molecules/page-header';
 import Logo from '../components/atoms/logo';
 import HeaderLinks from '../components/molecules/header-links';
 import {renderToStaticMarkup} from "react-dom/server";
 import {MDXProvider} from "@mdx-js/react";
 import {MDXComponents} from "../lib/mdx-helpers";
+import Blog from "../components/atoms/post-layout";
 
-export const BlogPost = ({ post, html }) => {
-  if (!post) return <></>;
+export const BlogPost = ({ content, title, tags }) => {
+  if (!content) return <></>;
   return (
     <div className="h-screen flex flex-col">
       <PageHeader Logo={Logo} Links={HeaderLinks} />
-      <BlogPostContainer>
-        <BlogTitle>{post.title}</BlogTitle>
-        <article dangerouslySetInnerHTML={{ __html: html }} />
-      </BlogPostContainer>
+      <Blog title={title} tags={tags} content={content} />
     </div>
   );
 };
@@ -31,12 +27,12 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(appCtx) {
   const pPath = appCtx.params.post_id;
-  const { default: X } = await import('../blog-posts/first-post.mdx');
-  console.log(X);
+  const { default: X,  meta} = await import('../blog-posts/first-post.mdx');
+  console.log(meta);
   const blogHtml = renderToStaticMarkup(
     <MDXProvider components={MDXComponents}>
-      <X />
+        <X />
     </MDXProvider>
   );
-  return { props: { post: { title: 'sample', html: 'sample' }, html: blogHtml } };
+  return { props: { content: blogHtml , title: meta.title, tags: meta.tags } };
 }

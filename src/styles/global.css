@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    pre,code {
+        @apply !font-code;
+    }
+
+    code:not([class]) {
+        @apply bg-gray-lighter px-2.5 py-1 rounded-md text-gray-darker font-medium;
+    }
+}
